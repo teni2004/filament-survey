@@ -1,0 +1,1 @@
+<p class="text-orange font-semibold"> {{ $answer->select_one_answer->option->text }}</p>

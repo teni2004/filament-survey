@@ -1,0 +1,1 @@
+<p id={{$id}} class=" text-center hover:bg-orange-500 bg-orange-500/45 shadow-sm sm:rounded-xl p-4 yesno{{$qid}}">{{ $slot }}</p>

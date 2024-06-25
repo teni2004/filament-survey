@@ -1,0 +1,1 @@
+<img class="h-8" src="{{ asset('images/givelify-logo-white.png') }}" alt="Logo Givelify"/>

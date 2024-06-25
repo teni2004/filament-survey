@@ -1,0 +1,1 @@
+<p class="text-orange font-semibold"> {{ $answer->rating_answer->rating }}</p>

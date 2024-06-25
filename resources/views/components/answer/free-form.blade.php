@@ -1,0 +1,1 @@
+<p class="text-orange font-semibold"> {{ $answer->free_form_answer->body }}</p>

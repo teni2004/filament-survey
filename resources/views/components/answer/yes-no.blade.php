@@ -1,0 +1,1 @@
+<p class="text-orange font-semibold"> {{ $answer->yes_no_answer->choice ? 'Yes' : 'No'}}</p>
