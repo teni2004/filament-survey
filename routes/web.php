@@ -5,8 +5,9 @@ use App\Models\Survey;
 use App\Http\Controllers\SurveyController;
 use Filament\Http\Middleware\Authenticate;
 use App\Models\SurveyResponse;
+use App\Http\Middleware\RedirectIfAuthenticatedToAdmin;
 
-Route::middleware([Authenticate::class])->group(function () {
+Route::middleware(RedirectIfAuthenticatedToAdmin::class)->group(function () {
     Route::get('/', function () {
         $surveys = null;
         $taken_surveys = [];
@@ -40,7 +41,7 @@ Route::middleware([Authenticate::class])->group(function () {
         }
 
         return view('index', ['surveys' => $surveys, 'taken' => $taken_surveys]);
-    });
+    });//->middleware(RedirectIfAuthenticatedToAdmin::class);
 
 
     Route::get('/admin/surveys/{survey}/preview', function (Survey $survey) {
@@ -62,9 +63,9 @@ Route::middleware([Authenticate::class])->group(function () {
     });
 
     //Actual submission
-    Route::post('/admin/surveys/{survey}/results', [SurveyController::class, 'store']);
+    Route::post('/admin/surveys/{survey}/results', [SurveyController::class, 'store'])->name('store');
     Route::get('/admin/surveys/{survey}/results', [SurveyController::class, 'view']);
-    Route::patch('/admin/surveys/{survey}/results', [SurveyController::class, 'update']);
+    Route::patch('/admin/surveys/{survey}/results', [SurveyController::class, 'update'])->name('update');
 
     Route::get('/admin/surveys/{survey}/stats', function (Survey $survey) {
 
