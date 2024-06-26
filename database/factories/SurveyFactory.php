@@ -5,6 +5,7 @@ namespace Database\Factories;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use App\Models\User;
 use App\Models\Team;
+use App\Models\Question;
 use App\Models\Survey;
 
 /**
@@ -32,6 +33,15 @@ class SurveyFactory extends Factory
             // Associate teams with the survey
             $team = Team::factory()->create(); // Example: Create 3 teams
             $survey->teams()->attach($team->id);
+
+            $question = Question::create([
+                'survey_id' => $survey->id,
+                'text' => 'Do you eat at least one citrus fruit a week?',
+                'label' => 'citrus',
+                'type' => 'yes-no',
+                'required' => 1
+            ]);
+            $survey->questions()->save($question);
         });
     }
 }

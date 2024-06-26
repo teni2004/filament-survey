@@ -41,7 +41,7 @@ Route::middleware(RedirectIfAuthenticatedToAdmin::class)->group(function () {
         }
 
         return view('index', ['surveys' => $surveys, 'taken' => $taken_surveys]);
-    });//->middleware(RedirectIfAuthenticatedToAdmin::class);
+    });
 
 
     Route::get('/admin/surveys/{survey}/preview', function (Survey $survey) {

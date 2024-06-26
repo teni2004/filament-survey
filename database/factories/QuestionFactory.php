@@ -22,6 +22,7 @@ class QuestionFactory extends Factory
             'text' => 'Do you eat at least one citrus fruit a week?',
             'label' => 'citrus',
             'type' => 'yes-no',
+            'required' => 1
         ];
     }
 }

@@ -39,11 +39,6 @@ class OptionResource extends Resource
                     ->schema([
                         Section::make()
                             ->schema([
-                                Select::make('survey_id')
-                                    ->relationship('question.survey', 'name')
-                                    ->label('Survey')
-                                    ->searchable()
-                                    ->required(),
                                 Select::make('question_id')
                                     ->relationship('question', 'text')
                                     ->searchable()

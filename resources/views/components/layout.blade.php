@@ -18,7 +18,7 @@
                 <div class="flex h-16 items-center justify-between">
                     <div class="flex items-center">
                         <div class="flex-shrink-0">
-                            <a href="/"><img class="h-8 w-8 ml-2" src="{{ asset('images/givelify-logo-only-orange.png') }}" alt="Your Company"></a>
+                            <a href="/admin"><img class="h-8 w-8 ml-2" src="{{ asset('images/givelify-logo-only-orange.png') }}" alt="Your Company"></a>
                         </div>
                         <div class="ml-10 flex items-baseline space-x-4">
                             <x-nav-link href="/" :active="request()->is('/')">Surveys</x-nav-link>

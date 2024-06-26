@@ -136,7 +136,7 @@ class SurveyResource extends Resource
                                                 ->numeric()
                                                 ->required(),
                                         ])->hidden(fn ($get) => $get('type') !== 'rating')
-                                ])
+                                ])->required()
                         ])
                     
                 ])->columnSpanFull()

@@ -2,7 +2,7 @@
     <x-slot:heading>
         Your Response
         <br>
-        <p class="text-sm text-slate-500 font-light font-sans">This survey results page is populated with example data.</p>
+        <p class="text-sm text-slate-500 font-light font-sans">This survey results page is populated with example response data.</p>
     </x-slot:heading>
 
 @php
