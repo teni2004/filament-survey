@@ -80,7 +80,7 @@ class SurveyResource extends Resource
                                             TextInput::make('text')
                                             ->required()
                                             ->afterStateUpdated(function(string $operation, $state, Forms\Set $set) {
-                                                if ($operation !== 'create') {
+                                                if ($operation !== 'create' && $operation !== 'edit') {
                                                     return;
                                                 }
                                                 $set('label', Str::random(rand(4, 10)));
@@ -127,6 +127,7 @@ class SurveyResource extends Resource
                                                 ->label('Minimum Value')
                                                 ->default(0)
                                                 ->disabled()
+                                                ->dehydrated() 
                                                 ->numeric()
                                                 ->required(),
                                             TextInput::make('max_value')

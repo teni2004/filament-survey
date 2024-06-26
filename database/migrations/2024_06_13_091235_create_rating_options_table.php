@@ -16,7 +16,7 @@ return new class extends Migration
             $table->foreignId('question_id')
                 ->constrained('questions')
                 ->cascadeOnDelete();
-            $table->unsignedBigInteger('min_value');
+            $table->unsignedBigInteger('min_value')->default(0);
             $table->unsignedBigInteger('max_value');
             $table->timestamps();
         });
