@@ -154,10 +154,15 @@ class SurveyResource extends Resource
                 BadgeColumn::make('teams')
                     ->label('Teams')
                     ->getStateUsing(function ($record) {
-                        return $record->teams->pluck('name')->toArray();
+                        $teams = $record->teams->pluck('name')->toArray();
+                        return empty($teams) ? ['No team assigned'] : $teams;
                     })
                     ->colors([
                         'gray',
+                        'danger' => fn ($state) => in_array('No team assigned', $state),
+                    ])
+                    ->icons([
+                        'heroicon-o-exclamation-triangle' => fn ($state) => in_array('No team assigned', $state),
                     ]),
                 TextColumn::make('preview_url')
                     ->label('Preview URL')
