@@ -45,7 +45,7 @@ class StatsOverview extends BaseWidget
         $totalresponses = 0;
         foreach($surveys as $survey)
         {
-            $totalresponses += count($survey->survey_responses);
+            $totalresponses += count($survey->responses);
         }
 
         $rate = ($totalresponses > 0 ? $this->formatNumber($totalresponses/$totalsent*100) : 0) . '%';

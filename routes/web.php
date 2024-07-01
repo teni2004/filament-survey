@@ -27,7 +27,7 @@ Route::middleware(RedirectIfAuthenticatedToAdmin::class)->group(function () {
         if ($surveys !== null && !empty($surveys))
         {
             $takenIds = [];
-            $responses = Auth::user()->survey_responses()->get();
+            $responses = Auth::user()->responses()->get();
             foreach($responses as $response) {
                 foreach($surveys as $survey) 
                 {
@@ -87,7 +87,7 @@ Route::middleware(RedirectIfAuthenticatedToAdmin::class)->group(function () {
                 case 'rating':
                     $total = 0;
                     $counter = 0;
-                    foreach($survey->survey_responses as $response)
+                    foreach($survey->responses as $response)
                     {
                         foreach($response->answers as $answer)
                         {
@@ -105,7 +105,7 @@ Route::middleware(RedirectIfAuthenticatedToAdmin::class)->group(function () {
                 case 'yes-no':
                     $yes = 0;
                     $no = 0;
-                    foreach($survey->survey_responses as $response)
+                    foreach($survey->responses as $response)
                     {
                         foreach($response->answers as $answer)
                         {
@@ -126,7 +126,7 @@ Route::middleware(RedirectIfAuthenticatedToAdmin::class)->group(function () {
                     {
                         $options[$option->id] = [$option->text, 0];
                     }
-                    foreach($survey->survey_responses as $response)
+                    foreach($survey->responses as $response)
                     {
                         foreach($response->answers as $answer)
                         {
@@ -155,7 +155,7 @@ Route::middleware(RedirectIfAuthenticatedToAdmin::class)->group(function () {
                     {
                         $options[$option->id] = [$option->text, 0];
                     }
-                    foreach($survey->survey_responses as $response)
+                    foreach($survey->responses as $response)
                     {
                         foreach($response->answers as $answer)
                         {

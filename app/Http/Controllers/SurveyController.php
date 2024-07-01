@@ -16,12 +16,12 @@ use Illuminate\Support\Facades\Auth;
 class SurveyController extends Controller
 {
     public function view(Survey $survey) {
-        $responses = $survey->survey_responses->where('user_id', Auth::user()->id);
+        $responses = $survey->responses->where('user_id', Auth::user()->id);
         return view('results', ['responses' => $responses]);
     }
 
     public function store(Survey $survey) {
-        foreach($survey->survey_responses as $response)
+        foreach($survey->responses as $response)
         {
             if($response->user == Auth::user())
             {
@@ -120,7 +120,7 @@ class SurveyController extends Controller
 
     public function update(Survey $survey) {
         $response = [];
-        foreach($survey->survey_responses as $sresponse)
+        foreach($survey->responses as $sresponse)
         {
             if($sresponse->user == Auth::user())
             {

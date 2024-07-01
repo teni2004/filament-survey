@@ -27,8 +27,8 @@ class CreateSurvey extends CreateRecord
         // Custom logic after creating the survey
         // For example, updating the survey's link to include its ID
         $survey->update([
-            'preview_url' => 'http://filament-survey.test/admin/surveys/' . $survey->id . '/preview',
-            'shareable_url' => 'http://filament-survey.test/admin/surveys/' . $survey->id
+            'preview_url' => url("/admin/surveys/{$survey->id}/preview"),
+            'shareable_url' => url("/admin/surveys/{$survey->id}")
         ]);
 
         return $survey;
