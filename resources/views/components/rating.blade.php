@@ -19,13 +19,13 @@ if(isset($answers))
     <input type="range" id="{{$label}}" name="{{$label}}" min="{{$rating_options->min_value}}" max="{{$rating_options->max_value}}" value="{{$middle}}" oninput="output.value = {{$label}}.value" style="accent-color:black" required>
 </div>
 <div class="flex items-center justify-center pb-2">
-    <output id="output" name="output" for="{{$label}}" class="text-4xl font-bold text-orange">{{$middle}}</output>
+    <output id="{{$label}}output" name="output" for="{{$label}}" class="text-4xl font-bold text-orange">{{$middle}}</output>
 </div>
 
 <script> 
     document.addEventListener('DOMContentLoaded', function() {
         const rangeInput = document.getElementById('{{$label}}');
-        const output = document.getElementById('output');
+        const output = document.getElementById('{{$label}}output');
 
         rangeInput.addEventListener('input', function() {
             output.value = rangeInput.value;
