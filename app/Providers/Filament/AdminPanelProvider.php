@@ -26,6 +26,7 @@ use Filament\Pages\Dashboard;
 
 class AdminPanelProvider extends PanelProvider
 {
+
     public function panel(Panel $panel): Panel
     {
         return $panel
@@ -66,7 +67,8 @@ class AdminPanelProvider extends PanelProvider
                 NavigationItem::make()
                      ->label('Assigned Surveys')
                      ->icon('heroicon-o-clipboard-document-check')
-                     ->url('/'),
+                     ->url('/')
+                     ->badge(fn() => auth()->user()->assignedSurveyCount())
             ]);
     }
 }

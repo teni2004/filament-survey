@@ -9,6 +9,7 @@ use Illuminate\Notifications\Notifiable;
 use App\Models\Survey;
 use App\Models\SurveyResponse;
 use App\Models\Team;
+use Illuminate\Support\Facades\Auth;
 
 class User extends Authenticatable
 {
@@ -27,6 +28,43 @@ class User extends Authenticatable
     public function teams()
     {
         return $this->belongsToMany(Team::class);
+    }
+
+    public function assignedSurveyCount()
+    {
+        $surveys = null;
+
+        $teams = Auth::user()->teams()->get(); 
+        $surveyIds = [];
+
+        foreach ($teams as $team) {
+            foreach ($team->surveys as $survey) {
+                if ($survey->published && !in_array($survey->id, $surveyIds)) {
+                    $surveys[] = $survey;
+                    $surveyIds[] = $survey->id;
+                }
+            }
+        }
+
+        if ($surveys !== null && !empty($surveys))
+        {
+            $responses = Auth::user()->responses()->get();
+            foreach($responses as $response) {
+                foreach($surveys as $survey) 
+                {
+                    if ($survey->id === $response->survey->id)
+                    {
+                        $key = array_search($survey, $surveys);
+                        if ($key !== false) {
+                            // Remove the element
+                            unset($surveys[$key]);
+                        }
+                    }
+                }
+            }
+        }
+        $returnVal = ($surveys !== null ? count($surveys) : null);
+        return $returnVal;
     }
 
     /**
