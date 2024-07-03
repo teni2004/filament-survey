@@ -1,3 +1,18 @@
+@props(['question', 'answers'])
+
+@php
+    if(isset($answers))
+    {
+        foreach($answers as $answer)
+        {
+            if($answer->question->id === $question->id)
+            {
+                $choice = $answer->yes_no_answer->choice;
+            }
+        }
+    }
+@endphp
+
 <style>
 .selected {
     background-color: #F35D22;
@@ -5,9 +20,9 @@
 </style>
 
 <div class="grid lg:grid-cols-2 gap-2 mt-6">
-    <x-yesno-button id="1" qid="{{$question->id}}">Yes</x-yesno-button>
-    <x-yesno-button id="0" qid="{{$question->id}}">No</x-yesno-button>
-    <input type="hidden" name="selected{{$question->id}}" id="selected{{$question->id}}" {{ $question->required ? 'required' : '' }}>
+    <x-yesno-button id="1" qid="{{$question->id}}" selected="{{($choice ? 'selected' : '')}}">Yes</x-yesno-button>
+    <x-yesno-button id="0" qid="{{$question->id}}" selected="{{($choice ? '' : 'selected')}}">No</x-yesno-button>
+    <input type="hidden" name="selected{{$question->id}}" id="selected{{$question->id}}" value="{{($choice ?? '')}}" {{ $question->required ? 'required' : '' }}>
 </div>
 
 <script>

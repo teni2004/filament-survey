@@ -1,4 +1,32 @@
-@props(['label', 'options', 'question'])
+@props(['label', 'options', 'question', 'answers'])
+
+@php
+    $required = $question->required;
+    $selected_options = [];
+    $value = '';
+    if(isset($answers))
+    {
+        foreach($answers as $answer)
+        {
+            if($answer->question->id === $question->id)
+            {
+                $mca = $answer->multiple_choice_answers;
+                foreach($mca as $instance)
+                {
+                    $selected_options[] = $instance->option_id;
+                    if(empty($value))
+                    {
+                        $value = $instance->option_id;
+                    }
+                    else
+                    {
+                        $value = $value . ", " . $instance->option_id;
+                    }
+                }
+            }
+        }
+    }
+@endphp
 
 <style>
     .{{$label}}.selected {
@@ -8,9 +36,9 @@
 
 <div class="grid lg:grid-cols-2 gap-2 mt-6">
     @foreach($options as $option)
-        <x-multiple-option label="{{$label}}" data="{{$option->id}}">{{$option->text}}</x-multiple-option>
+        <x-multiple-option label="{{$label}}" data="{{$option->id}}" selected="{{(in_array($option->id, $selected_options)) ? 'selected' : '' }}">{{$option->text}}</x-multiple-option>
     @endforeach
-    <input type="hidden" name="selected{{ $option->question->id }}" id="selected{{ $option->question->id }}" {{ $question->required ? 'required' : '' }}>
+    <input type="hidden" name="selected{{ $option->question->id }}" id="selected{{ $option->question->id }}" value="{{($value ?? '')}}" {{ $question->required ? 'required' : '' }}>
 </div>
 
 <script>
