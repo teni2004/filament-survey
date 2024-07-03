@@ -1,6 +1,7 @@
 @props(['question', 'answers'])
 
 @php
+    $choice = '';
     if(isset($answers))
     {
         foreach($answers as $answer)
@@ -20,8 +21,8 @@
 </style>
 
 <div class="grid lg:grid-cols-2 gap-2 mt-6">
-    <x-yesno-button id="1" qid="{{$question->id}}" selected="{{($choice ? 'selected' : '')}}">Yes</x-yesno-button>
-    <x-yesno-button id="0" qid="{{$question->id}}" selected="{{($choice ? '' : 'selected')}}">No</x-yesno-button>
+    <x-yesno-button id="1" qid="{{$question->id}}" selected="{{($choice == 1 ? 'selected' : '')}}">Yes</x-yesno-button>
+    <x-yesno-button id="0" qid="{{$question->id}}" selected="{{($choice == 0 ? 'selected' : '')}}">No</x-yesno-button>
     <input type="hidden" name="selected{{$question->id}}" id="selected{{$question->id}}" value="{{($choice ?? '')}}" {{ $question->required ? 'required' : '' }}>
 </div>
 
