@@ -79,12 +79,6 @@ class SurveyResource extends Resource
                                         ->schema([
                                             TextInput::make('text')
                                             ->required()
-                                            ->afterStateUpdated(function(string $operation, $state, Forms\Set $set) {
-                                                if ($operation !== 'create' && $operation !== 'edit') {
-                                                    return;
-                                                }
-                                                $set('label', Str::random(rand(4, 10)));
-                                            }),
                                         ]),
                                     Grid::make(2)
                                         ->schema([  
@@ -106,6 +100,12 @@ class SurveyResource extends Resource
                                                     if ($state === 'rating') {
                                                         $set('required', true);
                                                     }
+                                                })
+                                                ->afterStateUpdated(function(string $operation, $state, Forms\Set $set) {
+                                                    if ($operation !== 'create' && $operation !== 'edit') {
+                                                        return;
+                                                    }
+                                                    $set('label', Str::random(rand(4, 10)));
                                                 }),
                                         ]),
                                     Grid::make(1)

@@ -57,8 +57,7 @@ Route::middleware(RedirectIfAuthenticatedToAdmin::class)->group(function () {
     })->name('take-survey');
 
     Route::get('/admin/surveys/{survey}/edit-response', function (Survey $survey) {
-        $answers= SurveyResponse::where('survey_id', $survey->id)->where('user_id', Auth::user()->id)->get()[0]->answers[0];
-        //dd($answers);
+        $answers= SurveyResponse::where('survey_id', $survey->id)->where('user_id', Auth::user()->id)->get()[0]->answers;
         return view('edit', ['survey' => $survey, 'answers' => $answers]);
     });
 

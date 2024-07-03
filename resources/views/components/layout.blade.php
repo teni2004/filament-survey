@@ -23,8 +23,8 @@
                         <div class="ml-10 flex items-baseline space-x-4">
                             <x-nav-link href="/" :active="request()->is('/')">Surveys</x-nav-link>
                             <x-nav-link href="/admin/surveys" :active="request()->is('/admin/surveys')">Admin</x-nav-link>
-                            @if(request()->segment(2) === 'preview-results' || request()->segment(2) === 'preview')
-                            <x-nav-link href="/admin/surveys/{{request()->segment(1)}}/edit" :active="request()->is('/admin/surveys/{{request()->segment(1)}}/edit')">Edit Survey</x-nav-link>
+                            @if(request()->segment(4) === 'preview-results' || request()->segment(4) === 'preview')
+                            <x-nav-link href="/admin/surveys/{{request()->segment(3)}}/edit" :active="request()->is('/admin/surveys/{{request()->segment(3)}}/edit')">Edit Survey</x-nav-link>
                             @endif
                             @if(request()->segment(4) === 'preview-results' || request()->segment(4) === 'preview' || request()->segment(4) === 'stats')
                             <x-nav-link href="/admin/surveys/{{request()->segment(3)}}/stats" :active="request()->is('/admin/surveys/{{request()->segment(3)}}/stats')">Stats</x-nav-link>

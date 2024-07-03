@@ -1,8 +1,18 @@
 @vite(['resources/css/app.css', 'resources/js/app.js'])
-@props(['rating_options', 'label'])
+@props(['rating_options', 'label', 'answers', 'question'])
 
 @php
 $middle = round($rating_options->max_value / 2);
+if(isset($answers))
+{
+    foreach($answers as $answer)
+    {
+        if($answer->question->id === $question->id)
+        {
+            $middle = $answer->rating_answer->rating;
+        }
+    }
+}
 @endphp
 <label for="{{$label}}"></label>
 <div class="flex flex-col pb-3">
