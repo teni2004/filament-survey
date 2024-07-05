@@ -114,8 +114,9 @@ class SurveyController extends Controller
                     break;
             }
         }
-        $responses[] = $response;
-        return view('results', ['responses' => $responses]);
+        $sortedAnswers = $response->answers->sortBy('question_id');
+
+        return view('results', ['response' => $response, 'sortedAnswers' => $sortedAnswers]);
     }
 
     public function update(Survey $survey) {
