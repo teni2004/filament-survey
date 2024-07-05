@@ -128,6 +128,91 @@ class SurveyController extends Controller
             }
         }
 
+        foreach($survey->questions as $question)
+        {
+            $answer = Answer::where('question_id', $question->id)->get();
+            if ($answer->isEmpty())
+            {
+                switch($question->type) {
+                    case 'rating':
+                        $rating = request($question->label);
+                        $answer = Answer::create([
+                            'survey_response_id' => $response->id,
+                            'question_id' => $question->id,
+                            'type' => 'rating',
+                        ]);
+                        RatingAnswer::create([
+                            'answer_id' => $answer->id,
+                            'rating' => $rating,
+                        ]);
+                        break;
+                    case 'yes-no':
+                        $choice = request('selected' . $question->id);
+                        if ($choice !== null)
+                        {
+                            $answer = Answer::create([
+                                'survey_response_id' => $response->id,
+                                'question_id' => $question->id,
+                                'type' => 'yes-no',
+                            ]);
+                            YesNoAnswer::create([
+                                'answer_id' => $answer->id,
+                                'choice' => $choice,
+                            ]); 
+                        }
+                        break;
+                    case 'multiple-choice': //test this
+                        $choices = request('selected' . $question->id);
+                        if ($choices)
+                        {
+                            $answer = Answer::create([
+                                'survey_response_id' => $response->id,
+                                'question_id' => $question->id,
+                                'type' => 'multiple-choice',
+                            ]);
+                            $choices = explode(",", $choices);
+                            foreach($choices as $choice) {
+                                MultipleChoiceAnswer::create([
+                                    'answer_id' => $answer->id,
+                                    'option_id' => $choice,
+                                ]);
+                            }
+                        }
+                        break;
+                    case 'select-one':
+                        $choice = request($question->label);
+                        if ($choice)
+                        {
+                            $answer = Answer::create([
+                                'survey_response_id' => $response->id,
+                                'question_id' => $question->id,
+                                'type' => 'select-one',
+                            ]);
+                            SelectOneAnswer::create([
+                                'answer_id' => $answer->id,
+                                'option_id' => $choice,
+                            ]);
+                        }
+                        break;
+                    case 'free-form':
+                        $body = request($question->label);
+                        if ($body)
+                        {
+                            $answer = Answer::create([
+                                'survey_response_id' => $response->id,
+                                'question_id' => $question->id,
+                                'type' => 'free-form',
+                            ]);
+                            FreeFormAnswer::create([
+                                'answer_id' => $answer->id,
+                                'body' => $body,
+                            ]);
+                        }
+                        break;
+                }
+            }
+        }
+
         foreach($response->answers as $answer) {
             switch($answer->type) {
                 case 'rating':
@@ -144,6 +229,10 @@ class SurveyController extends Controller
                             'choice' => $choice,
                         ]); 
                     }
+                    else
+                    {
+                        $answer->delete();
+                    }
                     break;
                 case 'multiple-choice':
                     $allchoices = request('selected' . $answer->question->id);
@@ -156,9 +245,10 @@ class SurveyController extends Controller
                             if(str_contains($allchoices, (string)$mca->option->id))
                             {
                                 unset($choices[array_search($mca->option->id, $choices)]);
-                                break;
                             }
-                            $mca->delete();
+                            else {
+                                $mca->delete();
+                            }
                         }
                         
                         foreach($choices as $choice) {
@@ -168,11 +258,13 @@ class SurveyController extends Controller
                             ]);
                         }
                     }
-                    //Trying to make this work...
+                    else
+                    {
+                        $answer->delete();
+                    }
                     cache()->forget('answer_' . $answer->id);
                     $answer = $answer;
-                    // $answer->multiple_choice_answers = $answer->multiple_choice_answers->fresh(); 
-                    break; //the changes i make here are not reflecting...
+                    break; 
                 case 'select-one':
                     $choice = request($answer->question->label);
                     if ($choice)
@@ -190,12 +282,17 @@ class SurveyController extends Controller
                             'body' => $body,
                         ]);
                     }
+                    else
+                    {
+                        $answer->delete();
+                    }
                     break;
             }
         }
-        $response = SurveyResponse::where('survey_id', $survey->id)->where('user_id', Auth::user()->id)->get();
-        $responses[] = $response;
         
-        return view('results', ['responses' => $response]);
+        $response = SurveyResponse::where('survey_id', $survey->id)->where('user_id', Auth::user()->id)->get()[0];
+        $sortedAnswers = $response->answers->sortBy('question_id');
+
+        return view('results', ['response' => $response, 'sortedAnswers' => $sortedAnswers]);
     }
 }
