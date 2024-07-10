@@ -151,6 +151,14 @@ class SurveyResource extends Resource
                 TextColumn::make('name')
                     ->searchable()
                     ->sortable(),
+                BadgeColumn::make('published')
+                    ->getStateUsing(function ($record) {
+                        return $record->published ? 'Published' : 'Private';
+                    })
+                    ->colors([
+                        'success',
+                        'gray' => fn ($state) => 'Private' == $state
+                    ]),
                 BadgeColumn::make('teams')
                     ->label('Teams')
                     ->getStateUsing(function ($record) {

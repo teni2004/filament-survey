@@ -103,9 +103,12 @@ class SurveyResponseResource extends Resource
                     ->searchable()
                     ->sortable()
                     ->toggleable(),
-                TextColumn::make('user_id')
+                TextColumn::make('user_id.name')
                     ->label('User Id')
                     ->toggleable(),
+                // TextColumn::make('user.name')
+                //     ->label('Respondant')
+                //     ->toggleable(),
             ])
             ->filters([
                 SelectFilter::make('survey_id')->relationship('survey', 'name')
