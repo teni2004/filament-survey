@@ -28,18 +28,21 @@ class StatsOverview extends BaseWidget
         $totalsent = 0;
         foreach($surveys as $survey)
         {
-            foreach($survey->teams as $team)
+            if ($survey->published)
             {
-                foreach($team->users as $user)
+                foreach($survey->teams as $team)
                 {
-                    if(!in_array($user->id, $userIds))
+                    foreach($team->users as $user)
                     {
-                        $totalsent++;
-                        $userIds[] = $user->id;
+                        if(!in_array($user->id, $userIds))
+                        {
+                            $totalsent++;
+                            $userIds[] = $user->id;
+                        }
                     }
                 }
+                $userIds = [];
             }
-            $userIds = [];
         }
 
         $totalresponses = 0;
