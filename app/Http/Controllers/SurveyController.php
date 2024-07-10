@@ -16,8 +16,9 @@ use Illuminate\Support\Facades\Auth;
 class SurveyController extends Controller
 {
     public function view(Survey $survey) {
-        $responses = $survey->responses->where('user_id', Auth::user()->id);
-        return view('results', ['responses' => $responses]);
+        $response = $survey->responses->where('user_id', Auth::user()->id)[0];
+        $sortedAnswers = $response->answers->sortBy('question_id');
+        return view('results', ['response' => $response, 'sortedAnswers' => $sortedAnswers]);
     }
 
     public function store(Survey $survey) {
