@@ -18,30 +18,69 @@ class SurveyFactory extends Factory
      *
      * @return array<string, mixed>
      */
+
+    private function getUserId()
+    {
+        if (rand(0,1)) {
+            return User::factory()->create()->id;
+        }
+        else {
+            return User::inRandomOrder()->first()->id ?? User::factory()->create()->id;
+        }
+    }
+
+    private function getPublishedBool()
+    {
+        if (rand(0,4)) {
+            return "1";
+        }
+        else {
+            return "0";
+        }
+    }
+
+    private function attachTeams($survey)
+    {
+        $attachedTeamIds = [];
+            $teamNo = rand(1,3);
+            for ($i = 0; $i < $teamNo; $i++)
+            {
+                do {
+                    $team = Team::inRandomOrder()->first();
+                } while (in_array($team->id, $attachedTeamIds));
+
+                $survey->teams()->attach($team->id);
+            
+                $attachedTeamIds[] = $team->id;
+            }
+    }
+
+    private function createQuestions($survey)
+    {
+        $questionNo = rand(1,5);
+        for ($i = 0; $i < $questionNo; $i++)
+        {
+            $question = Question::factory()->create([
+                'survey_id' => $survey->id
+            ]);
+        }
+    }
+
     public function definition(): array
     {
         return [
-            'user_id' => User::factory()->create()->id,
-            'name' => fake()->word() . ' Survey',
-            'published' => '1', //maybe i can make this random between 1 and 0 later
+            'user_id' => $this->getUserId(),
+            'name' => ucfirst(fake()->word()) . ' Survey',
+            'published' => $this->getPublishedBool(),
         ];
     }
 
     public function configure()
     {
+   
         return $this->afterCreating(function (Survey $survey) {
-            // Associate teams with the survey
-            $team = Team::factory()->create(); // Example: Create 3 teams
-            $survey->teams()->attach($team->id);
-
-            $question = Question::create([
-                'survey_id' => $survey->id,
-                'text' => 'Do you eat at least one citrus fruit a week?',
-                'label' => 'citrus',
-                'type' => 'yes-no',
-                'required' => 1
-            ]);
-            $survey->questions()->save($question);
+            $this->attachTeams($survey);
+            $this->createQuestions($survey);
         });
     }
 }

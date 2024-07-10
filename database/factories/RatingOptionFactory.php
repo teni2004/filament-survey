@@ -3,12 +3,11 @@
 namespace Database\Factories;
 
 use Illuminate\Database\Eloquent\Factories\Factory;
-use App\Models\Question;
 
 /**
- * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Option>
+ * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\RatingOption>
  */
-class OptionFactory extends Factory
+class RatingOptionFactory extends Factory
 {
     /**
      * Define the model's default state.
@@ -18,7 +17,8 @@ class OptionFactory extends Factory
     public function definition(): array
     {
         return [
-            'text' => ucfirst(fake()->word())
+            'min_value' => 0,
+            'max_value' => [5, 10, 10, 10, 10, 100][array_rand([5, 10, 10, 10, 10, 100])],
         ];
     }
 }
