@@ -97,9 +97,8 @@ Route::middleware(RedirectIfAuthenticatedToAdmin::class)->group(function () {
                             }
                         }
                     }
-                    $average = formatNumber($total/$counter, 1) . '/' . $question->rating_options->max_value;
+                    $average = $counter > 0 ? formatNumber($total/$counter, 1) . '/' . $question->rating_options->max_value : null;
                     $statistics[$question->id] = $average;
-                    //dump($statistics[$question->id][0]); //why is this 4??
                     break;
                 case 'yes-no':
                     $yes = 0;

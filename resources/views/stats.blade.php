@@ -13,7 +13,9 @@
             @switch ($question->type)
                 @case('rating')
                     <p class="font-semibold"> {{$question->text}} </p>
-                    <p> The average rating is <span class="text-orange">{{$statistics[$id]}}</span></p>
+                    @if($statistics[$id])
+                        <p> The average rating is <span class="text-orange">{{$statistics[$id]}}</span></p>
+                    @endif
                     @break
                 @case('yes-no')
                     <p class="font-semibold"> {{$question->text}} </p>
