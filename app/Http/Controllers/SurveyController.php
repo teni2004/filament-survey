@@ -16,9 +16,13 @@ use Illuminate\Support\Facades\Auth;
 class SurveyController extends Controller
 {
     public function view(Survey $survey) {
+        if($survey->responses->where('user_id', Auth::user()->id)->isEmpty())
+        {
+            return redirect('admin/surveys/' . $survey->id);
+        }
         $response = $survey->responses->where('user_id', Auth::user()->id)[0];
         $sortedAnswers = $response->answers->sortBy('question_id');
-        return view('results', ['response' => $response, 'sortedAnswers' => $sortedAnswers]);
+        return view('results', ['response' => $response, 'sortedAnswers' => $sortedAnswers, 'survey' => $survey]);
     }
 
     public function store(Survey $survey) {
@@ -116,8 +120,7 @@ class SurveyController extends Controller
             }
         }
         $sortedAnswers = $response->answers->sortBy('question_id');
-
-        return view('results', ['response' => $response, 'sortedAnswers' => $sortedAnswers]);
+        return view('results', ['response' => $response, 'sortedAnswers' => $sortedAnswers, 'survey' => $survey]);
     }
 
     public function update(Survey $survey) {
@@ -266,7 +269,7 @@ class SurveyController extends Controller
                     }
                     cache()->forget('answer_' . $answer->id);
                     $answer = $answer;
-                    break; 
+                    break;
                 case 'select-one':
                     $choice = request($answer->question->label);
                     if ($choice)
@@ -291,10 +294,9 @@ class SurveyController extends Controller
                     break;
             }
         }
-        
         $response = SurveyResponse::where('survey_id', $survey->id)->where('user_id', Auth::user()->id)->get()[0];
         $sortedAnswers = $response->answers->sortBy('question_id');
 
-        return view('results', ['response' => $response, 'sortedAnswers' => $sortedAnswers]);
+        return view('results', ['response' => $response, 'sortedAnswers' => $sortedAnswers, 'survey' => $survey]);
     }
 }

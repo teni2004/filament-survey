@@ -34,7 +34,7 @@
             <div class="flex items-center justify-center">
                 <button type="submit" class="rounded-xl bg-orange px-6 mb-8 py-3 text-xl font-semibold text-white shadow-sm hover:bg-orange/40">Submit</button>
             </div>
-    </form>
+        </form>
     @else
         <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg mb-8 p-4 space-y-3">
             <p class="font-semibold">This survey has not been assigned to you.</p>

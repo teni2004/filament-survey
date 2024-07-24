@@ -7,6 +7,8 @@ use Filament\Http\Middleware\Authenticate;
 use App\Models\SurveyResponse;
 use App\Http\Middleware\RedirectIfAuthenticatedToAdmin;
 
+Route::get('/health-check', fn () => ['status' => 'ok']);
+
 Route::middleware(RedirectIfAuthenticatedToAdmin::class)->group(function () {
     Route::get('/', function () {
         $surveys = null;
@@ -97,7 +99,9 @@ Route::middleware(RedirectIfAuthenticatedToAdmin::class)->group(function () {
                             }
                         }
                     }
-                    $average = $counter > 0 ? formatNumber($total/$counter, 1) . '/' . $question->rating_options->max_value : null;
+                    $average = $counter > 0
+                        ? formatNumber($total / $counter, 1) . '/' . $question->rating_options->max_value 
+                        : null;
                     $statistics[$question->id] = $average;
                     break;
                 case 'yes-no':
